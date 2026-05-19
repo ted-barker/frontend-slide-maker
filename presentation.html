@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Science: Starting with the Population</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #0E0F0C;
+            overflow: hidden;
+        }
+
+        .slides-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 64px;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        /* Slide 1: Title */
+        .title-slide {
+            flex-direction: row;
+            padding: 0;
+        }
+
+        .title-left {
+            width: 60%;
+            height: 100%;
+            background: #163300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 64px;
+        }
+
+        .title-left h1 {
+            font-size: 64px;
+            font-weight: 700;
+            color: #9FE870;
+            text-transform: uppercase;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .title-right {
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(135deg, #A0E1E1 0%, #FFEB69 50%, #9FE870 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6;
+            filter: blur(40px);
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: #A0E1E1;
+            top: 10%;
+            left: 10%;
+        }
+
+        .orb-2 {
+            width: 250px;
+            height: 250px;
+            background: #FFEB69;
+            top: 40%;
+            left: 30%;
+        }
+
+        .orb-3 {
+            width: 280px;
+            height: 280px;
+            background: #9FE870;
+            bottom: 15%;
+            right: 15%;
+        }
+
+        /* Section dividers */
+        .section-divider {
+            background: #FFEB69;
+        }
+
+        .section-divider h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #0E0F0C;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .section-divider.blue {
+            background: #A0E1E1;
+        }
+
+        .section-divider.neutral {
+            background: #F5F5F5;
+        }
+
+        /* Content slides */
+        .content-slide {
+            flex-direction: row;
+            background: #F5F5F5;
+            padding: 64px;
+            gap: 48px;
+        }
+
+        .content-left {
+            flex: 6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .content-right {
+            flex: 4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content-slide h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #163300;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+        .content-slide p {
+            font-size: 20px;
+            color: #454745;
+            line-height: 1.6;
+        }
+
+        .content-slide ul {
+            list-style: none;
+            margin-top: 24px;
+        }
+
+        .content-slide li {
+            font-size: 20px;
+            color: #454745;
+            line-height: 2;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .content-slide li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #163300;
+            font-weight: 700;
+        }
+
+        /* Centered statement slides */
+        .statement-slide {
+            background: #FFFFFF;
+        }
+
+        .statement-slide h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #163300;
+            text-align: center;
+            line-height: 1.3;
+            max-width: 900px;
+        }
+
+        .statement-slide .subtext {
+            font-size: 20px;
+            color: #6A6C6A;
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        /* Key questions slide */
+        .questions-slide {
+            background: #FFFFFF;
+        }
+
+        .questions-slide h2 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #163300;
+            text-transform: uppercase;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* Icon styles */
+        .icon-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            font-weight: 700;
+        }
+
+        .icon-circle.green {
+            background: #9FE870;
+            color: #163300;
+        }
+
+        .icon-circle.warning {
+            background: #EDC843;
+            color: #163300;
+        }
+
+        /* Two column comparison */
+        .two-column {
+            flex-direction: row;
+            background: #F5F5F5;
+            padding: 64px;
+            gap: 48px;
+        }
+
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: #FFFFFF;
+            padding: 32px;
+            border-radius: 8px;
+        }
+
+        .column h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #163300;
+            margin-bottom: 12px;
+        }
+
+        .column p {
+            font-size: 20px;
+            color: #454745;
+        }
+
+        /* Chart styles */
+        .chart-container {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 32px;
+        }
+
+        .bar {
+            height: 32px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #0E0F0C;
+        }
+
+        .bar.green { background: #9FE870; }
+        .bar.yellow { background: #FFEB69; }
+        .bar.blue { background: #A0E1E1; }
+        .bar.warning { background: #EDC843; }
+        .bar.error { background: #A8200D; color: #FFFFFF; }
+
+        /* Dark slide */
+        .dark-slide {
+            background: #163300;
+        }
+
+        .dark-slide h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FFFFFF;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1.5;
+            max-width: 900px;
+        }
+
+        /* Closing slide */
+        .closing-slide {
+            background: #163300;
+        }
+
+        .closing-slide h1 {
+            font-size: 96px;
+            font-weight: 700;
+            color: #9FE870;
+            text-transform: uppercase;
+        }
+
+        /* Two sections style */
+        .two-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            margin-top: 24px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #163300;
+            margin-bottom: 12px;
+        }
+
+        .section-title.red {
+            color: #A8200D;
+        }
+
+        .two-sections ul {
+            margin-top: 0;
+        }
+
+        /* Diagram styles */
+        .diagram {
+            position: relative;
+            width: 280px;
+            height: 280px;
+        }
+
+        .outer-ring {
+            width: 280px;
+            height: 280px;
+            border: 40px solid #9FE870;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .inner-circle {
+            width: 180px;
+            height: 180px;
+            background: #163300;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            font-weight: 700;
+            color: #9FE870;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            background: #163300;
+            color: #9FE870;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav button:hover {
+            background: #2E5500;
+        }
+
+        .nav button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            background: #163300;
+            color: #9FE870;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+
+        /* Simple bar chart */
+        .simple-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 250px;
+        }
+
+        .simple-bar {
+            height: 40px;
+            border-radius: 4px;
+        }
+
+        .simple-bar.bar1 {
+            width: 180px;
+            background: #163300;
+        }
+
+        .simple-bar.bar2 {
+            width: 220px;
+            background: #9FE870;
+        }
+
+        .simple-bar.bar3 {
+            width: 160px;
+            background: #FFEB69;
+        }
+
+        /* List with builds */
+        .build-list {
+            text-align: center;
+        }
+
+        .build-item {
+            font-size: 32px;
+            font-weight: 700;
+            color: #163300;
+            margin-bottom: 16px;
+        }
+
+        /* Formula */
+        .formula {
+            font-size: 32px;
+            font-weight: 700;
+            color: #163300;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        /* Sampling icons */
+        .sampling-icons {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sampling-icon {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+
+        .sampling-icon.icon1 {
+            background: #9FE870;
+            color: #163300;
+        }
+
+        .sampling-icon.icon2 {
+            background: #FFEB69;
+            color: #163300;
+            border-radius: 8px;
+        }
+
+        .sampling-icon.icon3 {
+            background: #A0E1E1;
+            color: #163300;
+        }
+
+        /* Approach item */
+        .approach {
+            margin-bottom: 20px;
+        }
+
+        .approach-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #163300;
+            margin-bottom: 8px;
+        }
+
+        .approach-desc {
+            font-size: 18px;
+            color: #454745;
+            line-height: 1.6;
+        }
+
+        /* Two boxes */
+        .two-boxes {
+            display: flex;
+            gap: 32px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .box {
+            flex: 1;
+            background: #FFFFFF;
+            padding: 32px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .box.green-border {
+            border: 3px solid #9FE870;
+        }
+
+        .box.dark-border {
+            border: 3px solid #163300;
+        }
+
+        .box-label {
+            font-size: 20px;
+            font-weight: 700;
+            color: #9FE870;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .box-label.dark {
+            color: #163300;
+        }
+
+        .box-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #163300;
+            margin-bottom: 12px;
+        }
+
+        .box-icon {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+
+        .box-icon.green-bg {
+            background: #9FE870;
+            border-radius: 50%;
+            color: #163300;
+        }
+
+        .box-icon.dark-bg {
+            background: #163300;
+            border-radius: 50%;
+            color: #9FE870;
+        }
+
+        /* Population boxes */
+        .pop-boxes {
+            display: flex;
+            gap: 48px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .pop-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pop-icon {
+            width: 180px;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 70px;
+        }
+
+        .pop-icon.rect {
+            background: #9FE870;
+            border-radius: 8px;
+            color: #163300;
+        }
+
+        .pop-icon.circle {
+            background: #163300;
+            border-radius: 50%;
+            color: #9FE870;
+        }
+
+        .pop-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #163300;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .pop-desc {
+            font-size: 20px;
+            color: #454745;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="slides-container">
+
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <div class="title-left">
+                <h1>Survey Science:<br>Starting with<br>the Population</h1>
+            </div>
+            <div class="title-right">
+                <div class="gradient-orb orb-1"></div>
+                <div class="gradient-orb orb-2"></div>
+                <div class="gradient-orb orb-3"></div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Section Divider -->
+        <div class="slide section-divider">
+            <h2>The Core Question</h2>
+        </div>
+
+        <!-- Slide 3: Population Principle -->
+        <div class="slide content-slide">
+            <div class="content-left">
+                <h2>Surveys start with populations, not questionnaires</h2>
+                <p>If we don't think carefully about who is in the population, who is reachable, and who needs to be analyzable, we can end up with a large dataset that still fails the research question.</p>
+            </div>
+            <div class="content-right">
+                <div class="icon-circle green">🔍</div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Section Divider -->
+        <div class="slide section-divider blue">
+            <h2>What Surveys Are Good For</h2>
+        </div>
+
+        <!-- Slide 5: Key Questions -->
+        <div class="slide questions-slide">
+            <h2>
+                How Much.<br>
+                How Often.<br>
+                How Many.<br>
+                How Different.
+            </h2>
+        </div>
+
+        <!-- Slide 6: Measurement Strengths -->
+        <div class="slide content-slide">
+            <div class="content-left">
+                <h2>Surveys are strongest at measurement</h2>
+                <ul>
+                    <li>Prevalence</li>
+                    <li>Comparing groups</li>
+                    <li>Tracking change</li>
+                    <li>Turning behavior into quantitative data</li>
+                </ul>
+            </div>
+            <div class="content-right">
+                <div class="simple-bars">
+                    <div class="simple-bar bar1"></div>
+                    <div class="simple-bar bar2"></div>
+                    <div class="simple-bar bar3"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Section Divider -->
+        <div class="slide section-divider neutral">
+            <h2>What Surveys Are Not Good For</h2>
+        </div>
+
+        <!-- Slide 8: Not Good For -->
+        <div class="slide statement-slide">
+            <h2>Surveys are not the best tool for depth, discovery, or causal explanation</h2>
+        </div>
+
+        <!-- Slide 9: Difficult Groups -->
+        <div class="slide content-slide">
+            <div class="content-left">
+                <h2>Also not ideal when groups are:</h2>
+                <ul style="list-style: none; padding: 0; margin-top: 24px;">
+                    <li style="font-size: 24px; color: #0E0F0C; line-height: 2; padding-left: 0;">Small</li>
+                    <li style="font-size: 24px; color: #0E0F0C; line-height: 2; padding-left: 0;">Uneven</li>
+                    <li style="font-size: 24px; color: #0E0F0C; line-height: 2; padding-left: 0;">Hard to identify</li>
+                </ul>
+            </div>
+            <div class="content-right">
+                <div class="icon-circle warning">?</div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Section Divider -->
+        <div class="slide section-divider">
+            <h2>Why This Matters in Tech</h2>
+        </div>
+
+        <!-- Slide 11: Known vs Unknown -->
+        <div class="slide statement-slide">
+            <h2>The "known" population is often less informative than the unknown one</h2>
+        </div>
+
+        <!-- Slide 12: Data Layers -->
+        <div class="slide content-slide">
+            <div class="content-left">
+                <div class="two-sections">
+                    <div>
+                        <div class="section-title">What you know:</div>
+                        <ul>
+                            <li>Account tier</li>
+                            <li>Region</li>
+                            <li>Product usage</li>
+                            <li>Company size</li>
+                            <li>Tenure</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="section-title red">What matters more:</div>
+                        <ul>
+                            <li>Willingness to respond</li>
+                            <li>Technical sophistication</li>
+                            <li>Decision authority</li>
+                            <li>Churn risk</li>
+                            <li>List representativeness</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="content-right">
+                <div class="diagram">
+                    <div class="outer-ring"></div>
+                    <div class="inner-circle">?</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Section Divider -->
+        <div class="slide section-divider blue">
+            <h2>Probabilistic Sampling</h2>
+        </div>
+
+        <!-- Slide 14: Known Probability -->
+        <div class="slide statement-slide">
+            <h2>Each person has a known, non-zero chance of selection</h2>
+            <p class="subtext">This gives the survey a defensible basis for inference</p>
+        </div>
+
+        <!-- Slide 15: Three Approaches -->
+        <div class="slide content-slide">
+            <div class="content-left">
+                <h2 style="font-size: 28px; margin-bottom: 32px;">Three sampling approaches:</h2>
+                <div class="approach">
+                    <div class="approach-title">1. Random sampling</div>
+                    <div class="approach-desc">Simple, but often not practical</div>
+                </div>
+                <div class="approach">
+                    <div class="approach-title">2. Stratified sampling</div>
+                    <div class="approach-desc">Divide first, then sample within groups</div>
+                </div>
+                <div class="approach">
+                    <div class="approach-title">3. Oversampling</div>
+                    <div class="approach-desc">Sample rare groups at higher rates</div>
+                </div>
+            </div>
+            <div class="content-right">
+                <div class="sampling-icons">
+                    <div class="sampling-icon icon1">●●●</div>
+                    <div class="sampling-icon icon2">▦</div>
+                    <div class="sampling-icon icon3">◐</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Oversampling Key -->
+        <div class="slide statement-slide">
+            <h2>Oversampling is essential when rare segments are business-critical</h2>
+        </div>
+
+        <!-- Slide 17: Section Divider -->
+        <div class="slide section-divider">
+            <h2>Sample Size & Power</h2>
+        </div>
+
+        <!-- Slide 18: Two Questions -->
+        <div class="slide two-column">
+            <div class="box green-border">
+                <div class="box-label">Question 1</div>
+                <div class="box-title">How many people overall?</div>
+                <div class="box-icon green-bg">👥</div>
+            </div>
+            <div class="box dark-border">
+                <div class="box-label dark">Question 2</div>
+                <div class="box-title">How many in each group you want to compare?</div>
+                <div class="box-icon dark-bg">👥</div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Segment Math -->
+        <div class="slide statement-slide">
+            <div class="formula">1,000 responses ÷ 5 segments<br>= 200 per segment</div>
+            <p class="subtext">And if segments are uneven, some will have far fewer</p>
+            <div class="chart-container">
+                <div class="bar green" style="width: 80%;">Segment A: 400</div>
+                <div class="bar yellow" style="width: 50%;">Segment B: 250</div>
+                <div class="bar blue" style="width: 40%;">Segment C: 200</div>
+                <div class="bar warning" style="width: 20%;">Segment D: 100</div>
+                <div class="bar error" style="width: 10%;">Segment E: 50</div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Power Factors -->
+        <div class="slide statement-slide" style="background: #F5F5F5;">
+            <h2 style="margin-bottom: 32px;">Power goes down when:</h2>
+            <div class="build-list">
+                <div class="build-item">Sample is small</div>
+                <div class="build-item">Expected effect is small</div>
+                <div class="build-item">Data are noisy</div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Section Divider -->
+        <div class="slide section-divider blue">
+            <h2>The Population Problem</h2>
+        </div>
+
+        <!-- Slide 22: Two Populations -->
+        <div class="slide two-column">
+            <div class="pop-boxes">
+                <div class="pop-box">
+                    <div class="pop-icon rect">📋</div>
+                    <div class="pop-title">Operational<br>Population</div>
+                    <div class="pop-desc">The list you can see</div>
+                </div>
+                <div class="pop-box">
+                    <div class="pop-icon circle">✓</div>
+                    <div class="pop-title">Analytic<br>Population</div>
+                    <div class="pop-desc">The one you can<br>make claims about</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: Bridge the Gap -->
+        <div class="slide statement-slide">
+            <h2>Survey design has to bridge the gap between what you see and what you can analyze</h2>
+        </div>
+
+        <!-- Slide 24: Key Takeaway -->
+        <div class="slide dark-slide">
+            <h2>Oversampling, weighting,<br>and subgroup planning<br>are not optional details.<br><br>They are core method.</h2>
+        </div>
+
+        <!-- Slide 25: Closing -->
+        <div class="slide closing-slide">
+            <h1>Questions?</h1>
+        </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="slide-counter">
+        <span id="current">1</span> / <span id="total">25</span>
+    </div>
+    <div class="nav">
+        <button id="prev">← Previous</button>
+        <button id="next">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+        const currentCounter = document.getElementById('current');
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            currentCounter.textContent = currentSlide + 1;
+
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        prevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
+        nextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') showSlide(currentSlide - 1);
+            if (e.key === 'ArrowRight') showSlide(currentSlide + 1);
+            if (e.key === ' ') {
+                e.preventDefault();
+                showSlide(currentSlide + 1);
+            }
+        });
+
+        document.getElementById('total').textContent = totalSlides;
+    </script>
+</body>
+</html>

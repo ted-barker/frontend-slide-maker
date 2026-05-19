@@ -1,0 +1,243 @@
+{
+  "name": "Wise",
+  "description": "Wise brand design system - official colors from wise.design",
+  "version": "1.0.0",
+  "created": "2026-05-19",
+  "colors": {
+    "primary": "#163300",
+    "secondary": "#9FE870",
+    "accent": "#FFEB69",
+    "semantic": {
+      "success": "#2F5711",
+      "warning": "#EDC843",
+      "error": "#A8200D",
+      "info": "#A0E1E1"
+    },
+    "text": {
+      "primary": "#0E0F0C",
+      "secondary": "#454745",
+      "tertiary": "#6A6C6A",
+      "link": "#163300",
+      "inverse": "#FFFFFF"
+    },
+    "background": {
+      "primary": "#FFFFFF",
+      "elevated": "#FFFFFF",
+      "screen": "#FFFFFF",
+      "dark": "#121511",
+      "neutral": "#F5F5F5"
+    },
+    "interactive": {
+      "primary": "#163300",
+      "accent": "#9FE870",
+      "secondary": "#868685",
+      "control": "#163300",
+      "contrast": "#9FE870"
+    },
+    "brand": {
+      "brightGreen": "#9FE870",
+      "forestGreen": "#163300",
+      "brightOrange": "#FFC091",
+      "brightYellow": "#FFEB69",
+      "brightBlue": "#A0E1E1",
+      "brightPink": "#FFD7EF",
+      "darkPurple": "#260A2F",
+      "darkGold": "#3A341C",
+      "darkCharcoal": "#21231D",
+      "darkMaroon": "#320707"
+    },
+    "variations": {
+      "primary": {
+        "tints": ["#2E5500", "#457700", "#5C9900", "#73BB00"],
+        "shades": ["#0F2600", "#0B1A00", "#070D00", "#040700"]
+      },
+      "secondary": {
+        "tints": ["#B3F099", "#C6F5B3", "#D9FACC", "#ECFCE6"],
+        "shades": ["#7FBA5A", "#5F8C43", "#3F5E2D", "#1F2F16"]
+      }
+    }
+  },
+  "spacing": {
+    "unit": 8,
+    "scale": [4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192],
+    "semantic": {
+      "xs": 4,
+      "sm": 8,
+      "md": 16,
+      "lg": 24,
+      "xl": 32,
+      "2xl": 48,
+      "3xl": 64
+    }
+  },
+  "effects": {
+    "shadows": {
+      "sm": "0 1px 2px rgba(14,15,12,0.05)",
+      "md": "0 2px 4px rgba(14,15,12,0.1)",
+      "lg": "0 4px 8px rgba(14,15,12,0.15)",
+      "xl": "0 8px 16px rgba(14,15,12,0.2)",
+      "2xl": "0 16px 32px rgba(14,15,12,0.25)"
+    },
+    "radius": {
+      "xs": 2,
+      "sm": 4,
+      "md": 8,
+      "lg": 16,
+      "xl": 24,
+      "2xl": 32,
+      "full": 9999
+    },
+    "blur": {
+      "sm": "4px",
+      "md": "8px",
+      "lg": "16px",
+      "xl": "24px"
+    }
+  },
+  "layout": {
+    "maxWidth": {
+      "content": 1200,
+      "text": 800,
+      "narrow": 600
+    },
+    "breakpoints": {
+      "mobile": 320,
+      "tablet": 768,
+      "desktop": 1024,
+      "wide": 1440
+    }
+  },
+  "accessibility": {
+    "contrastRatios": {
+      "primaryOnWhite": 13.2,
+      "secondaryOnWhite": 1.5,
+      "textPrimaryOnWhite": 18.3,
+      "textSecondaryOnWhite": 7.8
+    },
+    "wcagLevel": "AAA",
+    "focusRingColor": "#163300",
+    "focusRingWidth": 3
+  },
+  "slideLayouts": {
+    "titleSlide": {
+      "pattern": "split-screen",
+      "titlePosition": "left",
+      "titleCase": "uppercase",
+      "titleWeight": 700,
+      "accentPosition": "right",
+      "accentTypes": ["gradient-imagery", "icons", "graphics"],
+      "backgroundColor": "colors.primary",
+      "titleColor": "colors.secondary"
+    },
+    "sectionDivider": {
+      "pattern": "full-background",
+      "textAlignment": "center",
+      "textCase": "uppercase",
+      "textWeight": 700,
+      "backgroundColor": ["colors.accent", "colors.background.neutral", "colors.semantic.info"],
+      "textColor": "colors.text.primary"
+    },
+    "contentSlide": {
+      "pattern": "left-content-right-visual",
+      "titlePosition": "top-left",
+      "contentArea": "left-60%",
+      "visualArea": "right-40%",
+      "backgroundColor": "colors.background.neutral"
+    }
+  },
+  "visualAssets": {
+    "imagery": {
+      "style": "gradient-abstract",
+      "colors": ["brightPink", "brightBlue", "brightYellow", "brightGreen"],
+      "usage": "Full-bleed images on title slides, circular/shaped cutouts for content slides",
+      "treatment": "Gradient overlays with brand colors"
+    },
+    "icons": {
+      "style": "outlined-circular",
+      "weight": "medium-to-bold",
+      "usage": "Circular backgrounds with brand colors, icon in contrasting color"
+    },
+    "graphics": {
+      "coins": "3D rendered coins with Wise logo",
+      "globes": "Textured spheres with gradient brand colors",
+      "arrows": "Circular outlined arrows for navigation/direction"
+    }
+  },
+  "presentationGuidelines": {
+    "dos": [
+      "Focus on one key thing per slide",
+      "Build over multiple slides",
+      "Simplify charts and data",
+      "Use full-bleed images",
+      "Make content direct and brief",
+      "Use icons and symbols"
+    ],
+    "donts": [
+      "Do not read words on screen verbatim",
+      "Do not show more than one thing per slide",
+      "Do not use complex unreadable charts",
+      "Do not use low-res GIFs or memes",
+      "Do not over-use or mix brand color palettes",
+      "Do not assume understanding of acronyms"
+    ],
+    "bestPractices": [
+      "Bold simple statements work best",
+      "Tight focus on content",
+      "Graph illustrating one point",
+      "One data point illustrated clearly",
+      "Highlight key numbers from charts",
+      "Summarise key points visually"
+    ]
+  },
+  "typography": {
+    "heading": {
+      "family": "Wise Sans, Inter, system-ui, -apple-system, sans-serif",
+      "weight": 700,
+      "lineHeight": 1.1,
+      "letterSpacing": "-0.02em",
+      "textTransform": "uppercase",
+      "sizes": {
+        "hero": 96,
+        "h1": 64,
+        "h2": 48,
+        "h3": 36,
+        "h4": 28,
+        "h5": 24,
+        "h6": 20
+      }
+    },
+    "body": {
+      "family": "Inter, system-ui, -apple-system, sans-serif",
+      "weight": 400,
+      "lineHeight": 1.6,
+      "sizes": {
+        "xlarge": 24,
+        "large": 20,
+        "medium": 18,
+        "small": 16,
+        "xs": 14
+      }
+    },
+    "mono": {
+      "family": "Menlo, Monaco, 'Courier New', monospace",
+      "weight": 400,
+      "lineHeight": 1.5
+    },
+    "fonts": {
+      "primary": "Wise Sans",
+      "secondary": "Inter",
+      "notes": "Wise Sans is the primary brand font used for high-impact statements and figures. It is custom-made and not available in Google Slides - use Inter as fallback and convert key text to PNG images with Wise Sans for final presentations. Inter is used for body text and subtitles."
+    }
+  },
+  "metadata": {
+    "extractedFrom": "wise.design/foundations/colour + Official Wise Theme '24 PDF + MD25 Template PDF",
+    "lastModified": "2026-05-19",
+    "author": "Claude Code - Brand Content Studio",
+    "notes": "Complete Wise brand system including official colors, slide layouts, visual asset guidelines, and presentation best practices from Mission Days 2024/2025 templates.",
+    "fontSources": {
+      "wiseSans": "Custom Wise brand font - not available for web embedding. Use Inter in Google Slides, convert to PNG for final delivery.",
+      "inter": "https://fonts.google.com/specimen/Inter"
+    },
+    "templateContext": "Mission Days presentations - large stage, remote audience, visual-first approach"
+  }
+}
