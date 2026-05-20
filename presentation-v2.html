@@ -20,6 +20,179 @@
             overflow: hidden;
         }
 
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                overflow: visible;
+            }
+
+            .slide {
+                page-break-after: always;
+                page-break-inside: avoid;
+                display: block !important;
+                position: relative !important;
+                width: 100%;
+                height: 100vh;
+                padding: 80px;
+            }
+
+            .nav, .slide-counter, .toolbar, .speaker-notes {
+                display: none !important;
+            }
+
+            /* Ensure all slides print */
+            .slide.active {
+                display: block !important;
+            }
+        }
+
+        /* Presenter View Styles (separate window) */
+        body.presenter-view {
+            background: #2B2D2A;
+            overflow: auto;
+        }
+
+        body.presenter-view .slides-container {
+            display: none;
+        }
+
+        body.presenter-view .nav,
+        body.presenter-view .slide-counter,
+        body.presenter-view .toolbar {
+            display: none;
+        }
+
+        .presenter-layout {
+            display: none;
+        }
+
+        body.presenter-view .presenter-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 24px;
+            padding: 24px;
+            height: 100vh;
+            max-width: 100%;
+        }
+
+        .presenter-header {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: #163300;
+            border-radius: 8px;
+        }
+
+        .presenter-timer {
+            font-size: 32px;
+            font-weight: 700;
+            color: #9FE870;
+            font-family: 'Inter', monospace;
+        }
+
+        .presenter-slide-counter {
+            font-size: 20px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .presenter-controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .presenter-controls button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 700;
+            background: #9FE870;
+            color: #163300;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .presenter-controls button:hover {
+            background: #B3F099;
+        }
+
+        .slide-preview {
+            background: #FFFFFF;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .slide-preview-label {
+            padding: 12px 16px;
+            background: #454745;
+            color: #FFFFFF;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .slide-preview-content {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: #FFFFFF;
+        }
+
+        .slide-preview-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            transform: scale(0.5);
+            transform-origin: top left;
+            width: 200%;
+            height: 200%;
+        }
+
+        .slide-preview.next {
+            opacity: 0.7;
+        }
+
+        .presenter-notes-panel {
+            grid-column: 1 / -1;
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 32px;
+            overflow-y: auto;
+            max-height: 30vh;
+        }
+
+        .presenter-notes-panel h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #163300;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .presenter-notes-panel p {
+            font-size: 18px;
+            color: #454745;
+            line-height: 1.6;
+        }
+
+        .presenter-notes-panel.empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6A6C6A;
+            font-style: italic;
+        }
+
         .slides-container {
             width: 100vw;
             height: 100vh;
@@ -430,6 +603,65 @@
             border-radius: 8px;
             z-index: 1000;
         }
+
+        /* Toolbar */
+        .toolbar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .toolbar button {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            background: #FFFFFF;
+            color: #163300;
+            border: 2px solid #163300;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toolbar button:hover {
+            background: #9FE870;
+        }
+
+        .toolbar button.active {
+            background: #163300;
+            color: #9FE870;
+        }
+
+        /* Speaker Notes */
+        .speaker-notes {
+            display: none;
+            margin-top: 24px;
+            padding: 24px;
+            background: #F5F5F5;
+            border-left: 4px solid #163300;
+            border-radius: 4px;
+        }
+
+        .speaker-notes h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #163300;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .speaker-notes p {
+            font-size: 16px;
+            color: #454745;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
@@ -461,6 +693,11 @@
                         </ul>
                     </div>
                 </div>
+
+                <div class="speaker-notes">
+                    <h4>Speaker Notes</h4>
+                    <p>Start by setting clear expectations. Surveys are tools for measurement at scale, not explanation. This isn't a weakness—it's their design. Understanding this boundary prevents research plans that ask surveys to do work they can't do.</p>
+                </div>
             </div>
         </div>
 
@@ -479,6 +716,11 @@
                 </div>
 
                 <p class="gap-note">Gaps between these boxes are visible and deliberate.</p>
+
+                <div class="speaker-notes">
+                    <h4>Speaker Notes</h4>
+                    <p>Population thinking comes first. The three boxes represent: theoretical population, reachable population, and analytically useful population. The gaps aren't errors—they're structural features of survey work. Ignoring them creates false confidence in bad data.</p>
+                </div>
             </div>
         </div>
 
@@ -497,6 +739,11 @@
                         <div class="segment seg5">80</div>
                     </div>
                     <div class="threshold-line">← Minimum reliable threshold (n=100)</div>
+                </div>
+
+                <div class="speaker-notes">
+                    <h4>Speaker Notes</h4>
+                    <p>This is where most survey plans break. The overall N looks good, but the real question is about subgroups. Segment 5 (n=80) is below the reliable threshold. You can't run the analysis you planned. The solution isn't more data everywhere—it's strategic oversampling of the groups that matter.</p>
                 </div>
             </div>
         </div>
@@ -592,9 +839,50 @@
                         Have you planned your subgroup Ns?
                     </div>
                 </div>
+
+                <div class="speaker-notes">
+                    <h4>Speaker Notes</h4>
+                    <p>End with the planning checklist. These three steps happen before fielding. If you skip them, you're hoping the data will be usable. Hope is not a research strategy. The question at the end is the forcing function: "Have you planned your subgroup Ns?" If the answer is no, you're not ready to field.</p>
+                </div>
             </div>
         </div>
 
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button id="export-pdf" onclick="window.print()">📄 Export to PDF</button>
+        <button id="start-presenting">🎬 Start Presenting</button>
+    </div>
+
+    <!-- Presenter View Layout (only visible in presenter window) -->
+    <div class="presenter-layout">
+        <div class="presenter-header">
+            <div class="presenter-timer" id="presenter-timer">00:00</div>
+            <div class="presenter-slide-counter">
+                Slide <span id="presenter-current">1</span> / <span id="presenter-total">6</span>
+            </div>
+            <div class="presenter-controls">
+                <button id="presenter-prev">← Previous</button>
+                <button id="presenter-next">Next →</button>
+                <button id="reset-timer">Reset Timer</button>
+            </div>
+        </div>
+
+        <div class="slide-preview current">
+            <div class="slide-preview-label">Current Slide</div>
+            <div class="slide-preview-content" id="current-preview"></div>
+        </div>
+
+        <div class="slide-preview next">
+            <div class="slide-preview-label">Next Slide</div>
+            <div class="slide-preview-content" id="next-preview"></div>
+        </div>
+
+        <div class="presenter-notes-panel" id="presenter-notes">
+            <h3>Speaker Notes</h3>
+            <p id="notes-content">No notes for this slide.</p>
+        </div>
     </div>
 
     <!-- Navigation -->
@@ -614,20 +902,46 @@
         const nextBtn = document.getElementById('next');
         const currentCounter = document.getElementById('current');
 
+        // BroadcastChannel for syncing between windows
+        const channel = new BroadcastChannel('presentation-sync');
+
+        // Check if this is the presenter view
+        const urlParams = new URLSearchParams(window.location.search);
+        const isPresenterView = urlParams.get('presenter') === 'true';
+
+        if (isPresenterView) {
+            document.body.classList.add('presenter-view');
+            initPresenterView();
+        }
+
         function showSlide(n) {
+            if (n < 0 || n >= totalSlides) return;
+
             slides[currentSlide].classList.remove('active');
-            currentSlide = (n + totalSlides) % totalSlides;
+            currentSlide = n;
             slides[currentSlide].classList.add('active');
             currentCounter.textContent = currentSlide + 1;
 
             prevBtn.disabled = currentSlide === 0;
             nextBtn.disabled = currentSlide === totalSlides - 1;
+
+            // Broadcast slide change to presenter window
+            channel.postMessage({ type: 'slide-change', slide: currentSlide });
         }
+
+        // Listen for slide changes from presenter window
+        channel.addEventListener('message', (event) => {
+            if (event.data.type === 'slide-change' && !isPresenterView) {
+                showSlide(event.data.slide);
+            }
+        });
 
         prevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
         nextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
 
         document.addEventListener('keydown', (e) => {
+            if (isPresenterView) return;
+
             if (e.key === 'ArrowLeft') showSlide(currentSlide - 1);
             if (e.key === 'ArrowRight') showSlide(currentSlide + 1);
             if (e.key === ' ') {
@@ -636,7 +950,139 @@
             }
         });
 
+        // Start Presenting Button
+        const startPresentingBtn = document.getElementById('start-presenting');
+        startPresentingBtn.addEventListener('click', () => {
+            const presenterWindow = window.open(
+                window.location.href + '?presenter=true',
+                'presenter',
+                'width=1200,height=800'
+            );
+
+            if (presenterWindow) {
+                startPresentingBtn.textContent = '✓ Presenting';
+                startPresentingBtn.disabled = true;
+            } else {
+                alert('Please allow popups to open presenter view');
+            }
+        });
+
         document.getElementById('total').textContent = totalSlides;
+
+        // Presenter View Initialization
+        function initPresenterView() {
+            const presenterCurrent = document.getElementById('presenter-current');
+            const presenterTotal = document.getElementById('presenter-total');
+            const currentPreview = document.getElementById('current-preview');
+            const nextPreview = document.getElementById('next-preview');
+            const notesContent = document.getElementById('notes-content');
+            const presenterPrevBtn = document.getElementById('presenter-prev');
+            const presenterNextBtn = document.getElementById('presenter-next');
+            const timerDisplay = document.getElementById('presenter-timer');
+            const resetTimerBtn = document.getElementById('reset-timer');
+
+            presenterTotal.textContent = totalSlides;
+
+            // Timer
+            let seconds = 0;
+            let timerInterval = setInterval(() => {
+                seconds++;
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                timerDisplay.textContent =
+                    String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+            }, 1000);
+
+            resetTimerBtn.addEventListener('click', () => {
+                seconds = 0;
+                timerDisplay.textContent = '00:00';
+            });
+
+            function updatePresenterView(slideIndex) {
+                currentSlide = slideIndex;
+                presenterCurrent.textContent = slideIndex + 1;
+
+                // Update current slide preview
+                const currentSlideClone = slides[slideIndex].cloneNode(true);
+                currentSlideClone.classList.add('active');
+                currentSlideClone.style.display = 'flex';
+                currentSlideClone.style.transform = 'scale(0.5)';
+                currentSlideClone.style.transformOrigin = 'top left';
+                currentSlideClone.style.width = '200%';
+                currentSlideClone.style.height = '200%';
+                currentPreview.innerHTML = '';
+                currentPreview.appendChild(currentSlideClone);
+
+                // Update next slide preview
+                if (slideIndex + 1 < totalSlides) {
+                    const nextSlideClone = slides[slideIndex + 1].cloneNode(true);
+                    nextSlideClone.classList.add('active');
+                    nextSlideClone.style.display = 'flex';
+                    nextSlideClone.style.transform = 'scale(0.5)';
+                    nextSlideClone.style.transformOrigin = 'top left';
+                    nextSlideClone.style.width = '200%';
+                    nextSlideClone.style.height = '200%';
+                    nextPreview.innerHTML = '';
+                    nextPreview.appendChild(nextSlideClone);
+                } else {
+                    nextPreview.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #6A6C6A; font-style: italic;">End of presentation</div>';
+                }
+
+                // Update speaker notes
+                const speakerNotes = slides[slideIndex].querySelector('.speaker-notes p');
+                if (speakerNotes) {
+                    notesContent.textContent = speakerNotes.textContent;
+                } else {
+                    notesContent.textContent = 'No notes for this slide.';
+                }
+
+                // Update button states
+                presenterPrevBtn.disabled = slideIndex === 0;
+                presenterNextBtn.disabled = slideIndex === totalSlides - 1;
+            }
+
+            // Navigation from presenter window
+            presenterPrevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    updatePresenterView(currentSlide - 1);
+                    channel.postMessage({ type: 'slide-change', slide: currentSlide });
+                }
+            });
+
+            presenterNextBtn.addEventListener('click', () => {
+                if (currentSlide < totalSlides - 1) {
+                    updatePresenterView(currentSlide + 1);
+                    channel.postMessage({ type: 'slide-change', slide: currentSlide });
+                }
+            });
+
+            // Keyboard navigation in presenter window
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                    updatePresenterView(currentSlide - 1);
+                    channel.postMessage({ type: 'slide-change', slide: currentSlide });
+                } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                    updatePresenterView(currentSlide + 1);
+                    channel.postMessage({ type: 'slide-change', slide: currentSlide });
+                } else if (e.key === ' ') {
+                    e.preventDefault();
+                    if (currentSlide < totalSlides - 1) {
+                        updatePresenterView(currentSlide + 1);
+                        channel.postMessage({ type: 'slide-change', slide: currentSlide });
+                    }
+                }
+            });
+
+            // Initial load
+            updatePresenterView(0);
+
+            // Listen for changes from main window
+            channel.addEventListener('message', (event) => {
+                if (event.data.type === 'slide-change') {
+                    updatePresenterView(event.data.slide);
+                }
+            });
+        }
     </script>
 </body>
 </html>
