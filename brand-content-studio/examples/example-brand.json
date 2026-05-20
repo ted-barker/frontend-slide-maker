@@ -1,0 +1,138 @@
+{
+  "name": "TechCorp",
+  "description": "Example brand system for a modern tech company",
+  "version": "1.0.0",
+  "created": "2026-05-19",
+  "colors": {
+    "primary": "#FF5733",
+    "secondary": "#3498DB",
+    "accent": "#F39C12",
+    "semantic": {
+      "success": "#27AE60",
+      "warning": "#F39C12",
+      "error": "#E74C3C",
+      "info": "#3498DB"
+    },
+    "text": {
+      "primary": "#2C3E50",
+      "secondary": "#7F8C8D",
+      "inverse": "#FFFFFF",
+      "muted": "#95A5A6"
+    },
+    "background": {
+      "primary": "#FFFFFF",
+      "secondary": "#F8F9FA",
+      "tertiary": "#ECF0F1",
+      "dark": "#2C3E50"
+    },
+    "variations": {
+      "primary": {
+        "tints": ["#FF7A59", "#FF9D7F", "#FFC0A6", "#FFE3CC"],
+        "shades": ["#CC4629", "#99341F", "#662316", "#33110B"]
+      },
+      "secondary": {
+        "tints": ["#5DADE2", "#85C1E9", "#AED6F1", "#D6EAF8"],
+        "shades": ["#2E86C1", "#21618C", "#1B4F72", "#154360"]
+      }
+    }
+  },
+  "typography": {
+    "heading": {
+      "family": "Inter, system-ui, -apple-system, sans-serif",
+      "weight": 700,
+      "lineHeight": 1.2,
+      "sizes": {
+        "h1": 48,
+        "h2": 36,
+        "h3": 28,
+        "h4": 24,
+        "h5": 20,
+        "h6": 18
+      }
+    },
+    "body": {
+      "family": "Inter, system-ui, -apple-system, sans-serif",
+      "weight": 400,
+      "lineHeight": 1.6,
+      "sizes": {
+        "xlarge": 20,
+        "large": 18,
+        "medium": 16,
+        "small": 14,
+        "xs": 12
+      }
+    },
+    "mono": {
+      "family": "Menlo, Monaco, 'Courier New', monospace",
+      "weight": 400,
+      "lineHeight": 1.5
+    }
+  },
+  "spacing": {
+    "unit": 8,
+    "scale": [4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192],
+    "semantic": {
+      "xs": 4,
+      "sm": 8,
+      "md": 16,
+      "lg": 24,
+      "xl": 32,
+      "2xl": 48,
+      "3xl": 64
+    }
+  },
+  "effects": {
+    "shadows": {
+      "sm": "0 1px 2px rgba(0,0,0,0.05)",
+      "md": "0 2px 4px rgba(0,0,0,0.1)",
+      "lg": "0 4px 8px rgba(0,0,0,0.15)",
+      "xl": "0 8px 16px rgba(0,0,0,0.2)",
+      "2xl": "0 16px 32px rgba(0,0,0,0.25)"
+    },
+    "radius": {
+      "xs": 2,
+      "sm": 4,
+      "md": 8,
+      "lg": 16,
+      "xl": 24,
+      "2xl": 32,
+      "full": 9999
+    },
+    "blur": {
+      "sm": "4px",
+      "md": "8px",
+      "lg": "16px",
+      "xl": "24px"
+    }
+  },
+  "layout": {
+    "maxWidth": {
+      "content": 1200,
+      "text": 800,
+      "narrow": 600
+    },
+    "breakpoints": {
+      "mobile": 320,
+      "tablet": 768,
+      "desktop": 1024,
+      "wide": 1440
+    }
+  },
+  "accessibility": {
+    "contrastRatios": {
+      "primaryOnWhite": 4.8,
+      "secondaryOnWhite": 5.2,
+      "textPrimaryOnWhite": 12.6,
+      "whiteOnPrimary": 5.1
+    },
+    "wcagLevel": "AA",
+    "focusRingColor": "#3498DB",
+    "focusRingWidth": 3
+  },
+  "metadata": {
+    "extractedFrom": "manual_input",
+    "lastModified": "2026-05-19",
+    "author": "Claude",
+    "notes": "Example brand system demonstrating full token structure"
+  }
+}
