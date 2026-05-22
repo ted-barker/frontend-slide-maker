@@ -5,15 +5,24 @@ Generate branded content (slides, diagrams, FigJam boards) from your design syst
 ## Usage
 
 ```
-/brand-content-studio [content-type] [--brand path/to/brand.json]
+/brand-content-studio [content-type] [--brand path/to/brand.json] [--mode batch|iterative]
 ```
 
 **Examples:**
 - `/brand-content-studio` — Interactive mode
-- `/brand-content-studio slides --brand my-brand.json` — Generate slides with existing brand
+- `/brand-content-studio slides --brand my-brand.json` — Generate slides (batch mode)
+- `/brand-content-studio slides --brand my-brand.json --mode iterative` — Slide-by-slide generation
 - `/brand-content-studio figjam` — Create FigJam-ready board
 
+**Modes:**
+- **Batch mode** (default): Generate all slides at once
+- **Iterative mode**: Generate slides one-by-one with preview after each
+
 ## Workflow
+
+### Batch Mode (Default)
+
+Generate all slides at once in a single pass.
 
 ### 1. Brand Setup (First Run or --brand flag)
 
@@ -84,6 +93,7 @@ This skill loads resources on-demand:
 - **resources/layout-previews.md** — Visual preview definitions
 - **resources/export-handlers.md** — Format conversion utilities
 - **resources/speaker-notes-workflow.md** — Speaker notes creation process
+- **resources/iterative-mode.md** — Slide-by-slide generation workflow (detailed implementation)
 
 ## Brand Asset Schema
 
@@ -156,14 +166,19 @@ When this skill is invoked:
    - Load `resources/color-system.md` for palette generation
    - Save structured brand JSON to `$BRAND_DIR/{name}.json`
 
-3. **Content type selection**
+3. **Determine generation mode**
+   - Check for `--mode iterative` flag
+   - If iterative mode requested → Go to Iterative Workflow (below)
+   - If batch mode (default) → Continue to step 4
+
+4. **Content type selection** (batch mode)
    - Load `resources/layout-previews.md`
    - Generate 3 visual previews using AskUserQuestion with preview field:
      - Each preview shows ASCII mockup of layout
      - Include brief description of use case
      - User selects preferred approach
 
-4. **Generate content**
+5. **Generate content** (batch mode)
    - Load appropriate template resource:
      - `resources/google-slides-templates.md` for slides
      - `resources/figjam-templates.md` for boards
@@ -171,7 +186,7 @@ When this skill is invoked:
    - Generate output in requested format(s)
    - Load `resources/export-handlers.md` for multi-format export
 
-5. **Speaker notes creation** (for slide presentations)
+6. **Speaker notes creation** (batch mode, for slide presentations)
    - Load `resources/speaker-notes-workflow.md`
    - Ask user preference: generate notes, provide template, or skip
    - If generating: draft contextual guidance for each slide
@@ -179,12 +194,265 @@ When this skill is invoked:
    - Get feedback and adjust tone/detail
    - Embed notes in HTML (hidden by default, visible in presenter mode)
 
-6. **Output delivery**
+7. **Output delivery** (batch mode)
    - Primary output: working file (HTML, JSON, etc.)
    - Export options: PPTX, FigJam JSON, PDF
    - Presenter mode instructions (dual-window view, keyboard shortcuts)
    - Provide shareable link if deployed
    - Show next-step suggestions (iterate, export, share)
+
+### Iterative Workflow (--mode iterative)
+
+When `--mode iterative` is specified, load `resources/iterative-mode.md` for detailed implementation guidance.
+
+**High-level flow:**
+
+**Phase 0: Outline Generation**
+
+1. **Check for source content file**:
+   - Ask user for markdown file path (e.g., `block1_design_your_survey.md`)
+   - Read entire source file
+   
+2. **Analyze content structure**:
+   - Identify main sections (headers with `##`, `###`)
+   - Extract key concepts, frameworks, examples
+   - Note natural transition points
+   - Count approximate slide needs per section
+   
+3. **Generate slide outline**:
+   - Propose slide-by-slide structure with:
+     - Slide number
+     - Slide type (title, section-divider, content, statement, etc.)
+     - Slide title/topic
+     - Background color (for dividers)
+     - Approximate content from source
+   - Follow brand presentation guidelines (one key thing per slide)
+   - Include section dividers between major topics
+   - Rotate section divider colors per brand palette
+   
+4. **Show outline to user**:
+   ```
+   Proposed Slide Outline (35 slides)
+   
+   1. Title Slide - "Design Your Survey"
+   2. Section Divider (Yellow) - "Learning Objectives"
+   3. Content - "What Surveys Are Good For"
+   4. Content - "What Surveys Can't Do"
+   ...
+   
+   Review this outline. You can:
+   - Edit titles or slide types
+   - Reorder slides
+   - Add/remove slides
+   - Change section divider colors
+   
+   When ready, say "looks good" to begin generating slides.
+   ```
+   
+5. **Save outline**:
+   - Write to: `{presentation-name}-outline.md`
+   - Include metadata: total slides, estimated duration, source file
+   
+**Phase 1: Slide-by-Slide Generation**
+
+6. **For each slide in outline**:
+   
+   a. **Generate slide content**:
+      - Extract relevant content from source .md file
+      - Create MINIMAL slide text (follow "no busy slides" rule)
+      - One statement or max 5 short bullets per slide
+      - Use brand colors from JSON
+      - Apply appropriate slide layout (title, content, divider, etc.)
+   
+   b. **Generate speaker notes**:
+      - Load `resources/speaker-notes-workflow.md`
+      - Extract ALL detail from corresponding source section
+      - Write comprehensive teaching script (3-6 paragraphs)
+      - Include examples, citations, facilitation guidance
+      - Follow speaker notes principles (context, teaching content, transitions)
+   
+   c. **Append to markdown file**:
+      - Append slide to `{presentation-name}-slides.md`
+      - Format: Slide number, type, content HTML, speaker notes
+      - Use `---` separator between slides
+   
+   d. **Update HTML file**:
+      - Read all slides from markdown file
+      - Parse and generate HTML structure
+      - Include navigation, presenter mode, slide counter
+      - Write/overwrite `{presentation-name}-presentation.html`
+   
+   e. **Show progress**:
+      ```
+      ✓ Slide 3/35 complete: "What Surveys Can't Do"
+      
+      Slide content: Statement slide with 3 key limitations
+      Speaker notes: 4 paragraphs with examples from source
+      
+      Files updated:
+      - design-your-survey-slides.md (appended)
+      - design-your-survey-presentation.html (regenerated)
+      
+      Open HTML in browser to preview.
+      
+      Options: "next" | "change X" | "edit notes" | "skip" | "stop"
+      ```
+   
+   f. **Wait for user input**:
+      - `"next"` / `"continue"` / `"looks good"` → Generate next slide
+      - `"change [description]"` → Regenerate current slide with changes
+      - `"edit notes"` → Regenerate only speaker notes
+      - `"skip"` → Add placeholder slide, continue
+      - `"stop"` / `"pause"` → Save progress, exit
+      - `"show outline"` → Display full outline
+      - `"jump to N"` → Jump to slide N
+   
+7. **Resume support**:
+   - If markdown file exists: "Found 12 completed slides. Resume from Slide 13?"
+   - Parse markdown to find last completed slide
+   - Continue from that position
+   
+8. **Completion**:
+   - When all slides complete, show summary
+   - Provide final HTML file with all slides
+   - Offer export options (PDF, PPTX)
+   - Show presenter mode instructions
+
+## Iterative Mode Workflow
+
+For presentations where you want to review and refine each slide before moving to the next.
+
+### Step 0: Generate Outline
+
+1. **Read source content** (markdown file with narrative)
+2. **Analyze structure**: Identify main sections, key concepts, natural breaks
+3. **Propose slide outline**: List of slides with types and titles
+4. **Show outline** to user with slide count, types, section dividers
+5. **User reviews**: Edit titles, reorder, add/remove slides
+6. **Save outline** to `{presentation-name}-outline.md`
+
+**Example outline:**
+```markdown
+# Design Your Survey - Slide Outline
+
+Total: 35 slides | Duration: ~80 minutes
+
+1. Title Slide - "Design Your Survey"
+2. Section Divider (Yellow) - "Learning Objectives"
+3. Content - "What Surveys Are Good For"
+4. Content - "What Surveys Can't Do"
+5. Section Divider (Blue) - "Sampling"
+6. Statement - "Probabilistic Sampling Is Required"
+7. Content - "Three Sampling Approaches"
+8. Content - "Sample Size Power Calculation"
+9. Content - "Statistical Power Requirements"
+...
+```
+
+### Step 1-N: Generate Each Slide
+
+For each slide in the outline:
+
+1. **Generate slide content** (minimal text, following Wise presentation guidelines)
+2. **Generate speaker notes** (comprehensive, extracted from source .md)
+3. **Append to markdown** file: `{presentation-name}-slides.md`
+4. **Update HTML file**: `{presentation-name}-presentation.html`
+5. **Show progress**: "Slide 3/35 complete. Open HTML to preview."
+6. **Wait for user feedback**:
+   - "looks good" / "next" / "continue" → Move to next slide
+   - "change X" → Regenerate current slide with changes
+   - "skip" → Add placeholder, move to next
+   - "stop" → Save progress, can resume later
+
+### Markdown Format (Appended Incrementally)
+
+```markdown
+# Presentation Title - Slides
+
+## Slide 1: Title Slide
+
+**Type:** title-slide
+**Background:** #163300 (Forest Green)
+**Layout:** 60/40 split
+
+**Slide Content:**
+```html
+<h1>Design Your Survey</h1>
+<p class="subtitle">Survey Science Workshop - Block 1</p>
+```
+
+**Speaker Notes:**
+Welcome to Block 1 of the Survey Science workshop. This 80-minute session 
+focuses on foundational decisions: sampling, question construction, and 
+cognitive fatigue management. The goal is to help you avoid the most common 
+failure modes in survey design...
+
+---
+
+## Slide 2: Section Divider
+
+**Type:** section-divider
+**Background:** #FFEB69 (Bright Yellow)
+
+**Slide Content:**
+```html
+<h2>LEARNING OBJECTIVES</h2>
+```
+
+**Speaker Notes:**
+Transition to objectives (2 minutes). By the end of this session, participants 
+will understand probabilistic sampling requirements, the BRUSO model for 
+question construction...
+
+---
+
+[Continue for each slide...]
+```
+
+### HTML Incremental Update
+
+After each slide is appended to the .md file:
+
+1. **Parse markdown** to extract all completed slides
+2. **Generate HTML** with:
+   - All completed slides (fully rendered)
+   - Navigation working for completed slides only
+   - Presenter mode with notes
+   - Slide counter shows: "3 of 35 (8% complete)"
+3. **Write/overwrite** `{presentation-name}-presentation.html`
+4. **User can open HTML** in browser to preview current state
+
+### Resume from Progress
+
+If the user stops and wants to continue later:
+
+1. **Read markdown file**: `{presentation-name}-slides.md`
+2. **Count completed slides**: Parse markdown to find last `## Slide N:`
+3. **Read outline**: `{presentation-name}-outline.md`
+4. **Ask user**: "Found 12 completed slides. Resume from Slide 13?"
+5. **Continue from last position**
+
+### Commands During Iteration
+
+- `"next"` / `"continue"` / `"looks good"` → Generate next slide
+- `"change [description]"` → Regenerate current slide with changes
+- `"edit notes"` → Regenerate only speaker notes for current slide
+- `"skip"` → Add placeholder, move to next slide
+- `"jump to slide N"` → Jump to specific slide number
+- `"show outline"` → Display full outline again
+- `"regenerate HTML"` → Rebuild HTML from current .md file
+- `"stop"` / `"pause"` → Save progress, exit iterative mode
+
+### Benefits of Iterative Mode
+
+✅ **Incremental progress** - Save work as you go  
+✅ **Preview anytime** - Open HTML after each slide  
+✅ **Easy editing** - Edit .md file directly if needed  
+✅ **Version control** - Markdown is git-friendly  
+✅ **Resume later** - Continue from any slide  
+✅ **Regenerate** - HTML can be rebuilt from .md anytime  
+✅ **Learning loop** - Each slide improves based on feedback  
+✅ **Fine-grained control** - Review every slide before finalizing
 
 ## Best Practices
 
@@ -194,6 +462,7 @@ When this skill is invoked:
 - **Incremental enhancement**: Start with basic brand (colors only), expand later
 - **Validation**: Check color contrast ratios for accessibility
 - **Versioning**: Save brand assets with timestamps for rollback
+- **Iterative mode**: Use for important presentations where quality > speed
 
 ## Notes
 

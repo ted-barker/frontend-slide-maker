@@ -17,14 +17,32 @@ Turn your brand assets into beautiful, on-brand content:
 # Interactive mode (recommended first time)
 /brand-content-studio
 
-# With existing brand
+# Generate all slides at once (batch mode)
 /brand-content-studio slides --brand my-company.json
+
+# Generate slides one-by-one with preview (iterative mode)
+/brand-content-studio slides --brand my-company.json --mode iterative
 
 # Create FigJam board
 /brand-content-studio figjam --brand startup-x.json
 ```
 
 ## 📋 Features
+
+### Generation Modes
+
+**Batch Mode (Default):**
+- Generate all slides at once
+- Fast, efficient for straightforward content
+- Get complete presentation in one pass
+
+**Iterative Mode (New!):**
+- Generate slides one-by-one
+- Review and refine each slide before moving to next
+- Preview HTML after each slide
+- Progress saved incrementally to markdown
+- Resume from any point
+- Perfect for important presentations where quality > speed
 
 ### Brand Asset Management
 
@@ -231,6 +249,53 @@ Not required for basic usage (HEX input + HTML output).
 ✓ Saved to ~/.claude/memory/brands/company-template.json
 
 > Create new content or refine brand system?
+```
+
+### Example 4: Iterative Slide Generation
+
+```bash
+/brand-content-studio slides --brand wise.json --mode iterative
+
+> Source content file? block1_design_your_survey.md
+
+✓ Read source file (45,892 bytes)
+✓ Analyzed structure: 6 main sections
+
+Proposed Slide Outline (35 slides):
+1. Title - "Design Your Survey"
+2. Divider (Yellow) - "Learning Objectives"
+3. Content - "What Surveys Are Good For"
+...
+35. Closing - "Questions?"
+
+> Review outline. Say "looks good" to begin.
+
+User: looks good
+
+✓ Outline saved to: design-your-survey-outline.md
+
+Generating Slide 1/35...
+
+✓ Slide 1 complete: "Design Your Survey" (Title)
+  Slide content: Title + subtitle
+  Speaker notes: 3 paragraphs (welcome, session overview, objectives)
+
+Files updated:
+• design-your-survey-slides.md (created)
+• design-your-survey-presentation.html (created)
+
+Preview: Open design-your-survey-presentation.html in browser
+
+Continue? ("next" to generate Slide 2)
+
+User: next
+
+Generating Slide 2/35...
+
+✓ Slide 2 complete: "Learning Objectives" (Section Divider)
+  ...
+
+[Process continues through all 35 slides]
 ```
 
 ## 🎓 Best Practices
