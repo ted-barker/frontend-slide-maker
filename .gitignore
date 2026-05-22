@@ -31,3 +31,13 @@ Temporary Items
 
 # Temporary files
 *.tmp
+
+# Claude local settings
+.claude/settings.local.json
+
+# Specstory working files
+.specstory/
+
+# Generated presentations (regenerate from source)
+*-presentation.html
+*-slides.html

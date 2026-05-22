@@ -14,17 +14,24 @@ Generate branded content (slides, diagrams, FigJam boards) from your design syst
 - `/brand-content-studio slides --brand my-brand.json --mode iterative` — Slide-by-slide generation
 - `/brand-content-studio figjam` — Create FigJam-ready board
 
-**Modes:**
-- **Batch mode** (default): Generate all slides at once
-- **Iterative mode**: Generate slides one-by-one with preview after each
+**Generation Modes:**
 
-## Workflow
+| Mode | Description | When to Use |
+|------|-------------|-------------|
+| **Batch** (default) | Generate all slides in one pass | Quick drafts, familiar content, time-constrained |
+| **Iterative** | Generate slides one-by-one with preview after each | Important presentations, complex content, quality > speed |
 
-### Batch Mode (Default)
+**Mode Comparison:**
+- **Batch**: Fast, efficient, complete deck at once
+- **Iterative**: Slower but controlled, review each slide, incremental preview, resume support
 
-Generate all slides at once in a single pass.
+## Workflows
 
-### 1. Brand Setup (First Run or --brand flag)
+### 🚀 Batch Mode (Default - Fast)
+
+Generate complete presentation in a single pass. Best for quick drafts and straightforward content.
+
+#### 1. Brand Setup (First Run or --brand flag)
 
 If no brand assets exist, I'll help you create them:
 
@@ -318,9 +325,9 @@ When `--mode iterative` is specified, load `resources/iterative-mode.md` for det
    - Offer export options (PDF, PPTX)
    - Show presenter mode instructions
 
-## Iterative Mode Workflow
+### 🎯 Iterative Mode (Controlled - Quality)
 
-For presentations where you want to review and refine each slide before moving to the next.
+For presentations where you want to review and refine each slide before moving to the next. Best for important decks and complex content.
 
 ### Step 0: Generate Outline
 
